@@ -4,17 +4,18 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { createSlice } from '@reduxjs/toolkit';
 
+import cache from '@/utils/cache';
 import { getGlobalState } from '@/utils/getGloabal';
 
 const initialState: UserState = {
   ...getGlobalState(),
   noticeCount: 0,
-  locale: (localStorage.getItem('locale')! || 'en_US') as Locale,
-  newUser: JSON.parse(localStorage.getItem('newUser')!) ?? true,
-  logged: localStorage.getItem('t') ? true : false,
+  locale: (cache.getCache('locale')! || 'zh_CN') as Locale,
+  newUser: JSON.parse(cache.getCache('newUser')!) ?? true,
+  logged: cache.getCache('token') ? true : false,
   menuList: [],
-  username: localStorage.getItem('username') || '',
-  role: (localStorage.getItem('username') || '') as Role,
+  userInfo: cache.getCache('userInfo') || {},
+  role: (cache.getCache('username') || '') as Role,
 };
 
 const userSlice = createSlice({
@@ -22,10 +23,10 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUserItem(state, action: PayloadAction<Partial<UserState>>) {
-      const { username } = action.payload;
+      const { userInfo } = action.payload;
 
-      if (username !== state.username) {
-        localStorage.setItem('username', action.payload.username || '');
+      if (userInfo !== state.userInfo) {
+        cache.setCache('userInfo', action.payload.userInfo);
       }
 
       Object.assign(state, action.payload);

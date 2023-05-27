@@ -5,28 +5,28 @@ import type { MenuChild } from '@/interface/layout/menu.interface';
 export type Locale = 'zh_CN' | 'en_US';
 
 export interface UserState {
-  username: string;
+  userInfo: any;
 
   /** menu list for init tagsView */
-  menuList: MenuChild[];
+  menuList?: MenuChild[];
 
   /** login status */
-  logged: boolean;
+  logged?: boolean;
 
-  role: Role;
+  role?: Role;
 
   /** user's device */
-  device: Device;
+  device?: Device;
 
   /** menu collapsed status */
-  collapsed: boolean;
+  collapsed?: boolean;
 
   /** notification count */
-  noticeCount: number;
+  noticeCount?: number;
 
   /** user's language */
-  locale: Locale;
+  locale?: Locale;
 
   /** Is first time to view the site ? */
-  newUser: boolean;
+  newUser?: boolean;
 }

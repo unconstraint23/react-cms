@@ -5,10 +5,12 @@ import axios from 'axios';
 
 import store from '@/stores';
 import { setGlobalState } from '@/stores/global.store';
+import cache from '@/utils/cache';
 // import { history } from '@/routes/history';
 
 const axiosInstance = axios.create({
-  timeout: 6000,
+  timeout: 5000,
+  headers: {},
 });
 
 axiosInstance.interceptors.request.use(
@@ -18,6 +20,13 @@ axiosInstance.interceptors.request.use(
         loading: true,
       }),
     );
+    const token = cache.getCache('token');
+
+    if (token) {
+      config.headers!['X-Access-Token'] = `${token}`;
+    }
+
+    config.headers!['platform'] = '1';
 
     return config;
   },
@@ -93,12 +102,19 @@ export const request = <T = any>(
   config?: AxiosRequestConfig,
 ): MyResponse<T> => {
   // const prefix = '/api'
-  const prefix = '';
+  const prefix = '/gfdz';
 
   url = prefix + url;
 
   if (method === 'post') {
     return axiosInstance.post(url, data, config);
+  } else if (method === 'put') {
+    return axiosInstance.put(url, data, config);
+  } else if (method === 'delete') {
+    return axiosInstance.delete(url, {
+      params: data,
+      ...config,
+    });
   } else {
     return axiosInstance.get(url, {
       params: data,

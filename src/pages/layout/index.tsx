@@ -6,14 +6,14 @@ import './index.less';
 import { Drawer, Layout, theme as antTheme } from 'antd';
 import { Suspense, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Outlet, useLocation } from 'react-router';
+import { Outlet } from 'react-router';
+import { useLocation } from 'react-router-dom';
 
-import { getMenuList } from '@/api/layout.api';
 import { setUserItem } from '@/stores/user.store';
+import { mockMenuList } from '@/utils/constants';
 import { getFirstPathCode } from '@/utils/getFirstPathCode';
 import { getGlobalState } from '@/utils/getGloabal';
 
-import { useGuide } from '../guide/useGuide';
 import HeaderComponent from './header';
 import MenuComponent from './menu';
 import TagsView from './tagView';
@@ -23,15 +23,16 @@ const WIDTH = 992;
 
 const LayoutPage: FC = () => {
   const location = useLocation();
+
   const [openKey, setOpenkey] = useState<string>();
   const [selectedKey, setSelectedKey] = useState<string>(location.pathname);
   const [menuList, setMenuList] = useState<MenuList>([]);
-  const { device, collapsed, newUser } = useSelector(state => state.user);
+  const { device, collapsed } = useSelector(state => state.user);
   const token = antTheme.useToken();
 
   const isMobile = device === 'MOBILE';
   const dispatch = useDispatch();
-  const { driverStart } = useGuide();
+  // const { driverStart } = useGuide();
 
   useEffect(() => {
     const code = getFirstPathCode(location.pathname);
@@ -64,17 +65,13 @@ const LayoutPage: FC = () => {
     return MenuListAll;
   };
 
-  const fetchMenuList = useCallback(async () => {
-    const { status, result } = await getMenuList();
-
-    if (status) {
-      setMenuList(result);
-      dispatch(
-        setUserItem({
-          menuList: initMenuListAll(result),
-        }),
-      );
-    }
+  const fetchMenuList = useCallback(() => {
+    setMenuList(mockMenuList);
+    dispatch(
+      setUserItem({
+        menuList: initMenuListAll(mockMenuList),
+      }),
+    );
   }, [dispatch]);
 
   useEffect(() => {
@@ -96,13 +93,13 @@ const LayoutPage: FC = () => {
     };
   }, [dispatch]);
 
-  useEffect(() => {
-    newUser && driverStart();
-  }, [newUser]);
+  // useEffect(() => {
+  //   newUser && driverStart();
+  // }, [newUser]);
 
   return (
     <Layout className="layout-page">
-      <HeaderComponent collapsed={collapsed} toggle={toggle} />
+      <HeaderComponent collapsed={collapsed!} toggle={toggle} />
       <Layout>
         {!isMobile ? (
           <Sider

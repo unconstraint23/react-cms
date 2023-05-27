@@ -12,15 +12,8 @@ import { formatSearch } from '@/utils/formatSearch';
 
 import { loginAsync } from '../../stores/user.action';
 
-const initialValues: LoginParams = {
-  username: 'guest',
-  password: 'guest',
-  // remember: true
-};
-
 const LoginForm: FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const dispatch = useDispatch();
   const { formatMessage } = useLocale();
 
@@ -28,17 +21,14 @@ const LoginForm: FC = () => {
     const res = dispatch(await loginAsync(form));
 
     if (!!res) {
-      const search = formatSearch(location.search);
-      const from = search.from || { pathname: '/' };
-
-      navigate(from);
+      navigate('/');
     }
   };
 
   return (
     <div className="login-page">
-      <Form<LoginParams> onFinish={onFinished} className="login-page-form" initialValues={initialValues}>
-        <h2>REACT ANTD ADMIN</h2>
+      <Form<LoginParams> onFinish={onFinished} className="login-page-form">
+        <h2>万联机器人管理平台</h2>
         <Form.Item
           name="username"
           rules={[
@@ -74,11 +64,11 @@ const LoginForm: FC = () => {
             })}
           />
         </Form.Item>
-        <Form.Item name="remember" valuePropName="checked">
+        {/* <Form.Item name="remember" valuePropName="checked">
           <Checkbox>
             <LocaleFormatter id="gloabal.tips.rememberUser" />
           </Checkbox>
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item>
           <Button htmlType="submit" type="primary" className="login-page-form_button">
             <LocaleFormatter id="gloabal.tips.login" />

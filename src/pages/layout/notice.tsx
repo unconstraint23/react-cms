@@ -6,7 +6,6 @@ import { Avatar, Badge, List, Popover, Spin, Tabs, Tag, Tooltip } from 'antd';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { getNoticeList } from '@/api/layout.api';
 import { ReactComponent as NoticeSvg } from '@/assets/header/notice.svg';
 import { EventStatus } from '@/interface/layout/notice.interface';
 import { useLocale } from '@/locales';
@@ -29,11 +28,7 @@ const HeaderNoticeComponent: FC = () => {
   // loads the notices belonging to logged in user
   // and sets loading flag in-process
   const getNotice = async () => {
-    setLoading(true);
-    const { status, result } = await getNoticeList();
-
-    setLoading(false);
-    status && setNoticeList(result);
+    setNoticeList([]);
   };
 
   useEffect(() => {

@@ -1,22 +1,22 @@
-import { createBrowserHistory } from 'history';
+import { createBrowserHistory, createHashHistory } from 'history';
 import React from 'react';
 import { Router } from 'react-router-dom';
 
-export const history = createBrowserHistory();
+export const hash = createHashHistory();
 
-interface HistoryRouterProps {
-  history: typeof history;
+interface HashRouterProps {
+  hash: typeof hash;
 }
 
-export const HistoryRouter: React.FC<HistoryRouterProps> = ({ history, children }) => {
+export const HashRouter: React.FC<HashRouterProps> = ({ hash, children }) => {
   const [state, setState] = React.useState({
-    action: history.action,
-    location: history.location,
+    action: hash.action,
+    location: hash.location,
   });
 
-  React.useLayoutEffect(() => {
-    history.listen(setState);
-  }, [history]);
+  React.useEffect(() => {
+    hash.listen(setState);
+  }, [hash.location]);
 
-  return React.createElement(Router, Object.assign({ children, navigator: history }, state));
+  return React.createElement(Router, Object.assign({ children, navigator: hash }, state));
 };

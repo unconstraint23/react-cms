@@ -1,22 +1,20 @@
 import type { FC } from 'react';
 
 import { LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from '@ant-design/icons';
-import { Dropdown, Layout, theme as antTheme, Tooltip } from 'antd';
-import { createElement } from 'react';
+import { Dropdown, Layout, Modal, theme as antTheme, Tooltip } from 'antd';
+import { createElement, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import Avator from '@/assets/header/avator.jpeg';
+import Avator from '@/assets/header/avator.png';
 import { ReactComponent as EnUsSvg } from '@/assets/header/en_US.svg';
 import { ReactComponent as LanguageSvg } from '@/assets/header/language.svg';
 import { ReactComponent as MoonSvg } from '@/assets/header/moon.svg';
 import { ReactComponent as SunSvg } from '@/assets/header/sun.svg';
 import { ReactComponent as ZhCnSvg } from '@/assets/header/zh_CN.svg';
-import AntdSvg from '@/assets/logo/antd.svg';
-import ReactSvg from '@/assets/logo/react.svg';
+import wlLogo from '@/assets/logo/logo.png';
+import logo2 from '@/assets/logo/logo2.png';
 import { LocaleFormatter, useLocale } from '@/locales';
-import { setGlobalState } from '@/stores/global.store';
-import { setUserItem } from '@/stores/user.store';
 
 import { logoutAsync } from '../../stores/user.action';
 import HeaderNoticeComponent from './notice';
@@ -38,6 +36,12 @@ const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
   const dispatch = useDispatch();
   const { formatMessage } = useLocale();
 
+  useEffect(() => {
+    if (!logged) {
+      navigate(`/login`);
+    }
+  }, [logged]);
+
   const onActionClick = async (action: Action) => {
     switch (action) {
       case 'userInfo':
@@ -45,9 +49,18 @@ const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
       case 'userSetting':
         return;
       case 'logout':
-        const res = Boolean(await dispatch(logoutAsync()));
+        Modal.confirm({
+          keyboard: false,
+          title: '退出登录',
+          content: '确定退出?',
+          okText: '确定',
+          cancelText: '取消',
+          onOk: async () => {
+            const res = Boolean(await dispatch(logoutAsync()));
 
-        res && navigate('/login');
+            res && navigate('/login');
+          },
+        });
 
         return;
     }
@@ -57,28 +70,28 @@ const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
     navigate('/login');
   };
 
-  const selectLocale = ({ key }: { key: any }) => {
-    dispatch(setUserItem({ locale: key }));
-    localStorage.setItem('locale', key);
-  };
+  // const selectLocale = ({ key }: { key: any }) => {
+  //   dispatch(setUserItem({ locale: key }));
+  //   localStorage.setItem('locale', key);
+  // };
 
-  const onChangeTheme = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
+  // const onChangeTheme = () => {
+  //   const newTheme = theme === 'dark' ? 'light' : 'dark';
 
-    localStorage.setItem('theme', newTheme);
-    dispatch(
-      setGlobalState({
-        theme: newTheme,
-      }),
-    );
-  };
+  //   localStorage.setItem('theme', newTheme);
+  //   dispatch(
+  //     setGlobalState({
+  //       theme: newTheme,
+  //     }),
+  //   );
+  // };
 
   return (
     <Header className="layout-page-header bg-2" style={{ backgroundColor: token.token.colorBgContainer }}>
       {device !== 'MOBILE' && (
         <div className="logo" style={{ width: collapsed ? 80 : 200 }}>
-          <img src={ReactSvg} alt="" style={{ marginRight: collapsed ? '2px' : '20px' }} />
-          <img src={AntdSvg} alt="" />
+          <img src={wlLogo} alt="" style={{ marginRight: collapsed ? '2px' : '20px' }} />
+          <img src={logo2} alt="" />
         </div>
       )}
       <div className="layout-page-header-main">
@@ -86,7 +99,7 @@ const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
           <span id="sidebar-trigger">{collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}</span>
         </div>
         <div className="actions">
-          <Tooltip
+          {/* <Tooltip
             title={formatMessage({
               id: theme === 'dark' ? 'gloabal.tips.theme.lightTooltip' : 'gloabal.tips.theme.darkTooltip',
             })}
@@ -96,9 +109,9 @@ const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
                 onClick: onChangeTheme,
               })}
             </span>
-          </Tooltip>
+          </Tooltip> */}
           <HeaderNoticeComponent />
-          <Dropdown
+          {/* <Dropdown
             menu={{
               onClick: info => selectLocale(info),
               items: [
@@ -120,7 +133,7 @@ const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
             <span>
               <LanguageSvg id="language-change" />
             </span>
-          </Dropdown>
+          </Dropdown> */}
 
           {logged ? (
             <Dropdown

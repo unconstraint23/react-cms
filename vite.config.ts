@@ -4,7 +4,9 @@ import { defineConfig } from 'vite';
 import vitePluginImp from 'vite-plugin-imp';
 import svgrPlugin from 'vite-plugin-svgr';
 
+const proTarget = 'http://119.23.76.8:10030';
 // https://vitejs.dev/config/
+
 export default defineConfig({
   resolve: {
     alias: {
@@ -14,10 +16,9 @@ export default defineConfig({
   server: {
     port: 8889,
     proxy: {
-      '/api': {
-        target: `http://localhost:${process.env.PORT}/api`,
-        // changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, ''),
+      '/gfdz': {
+        target: proTarget, // 请求本地 需要后台项目
+        changeOrigin: true,
       },
     },
   },

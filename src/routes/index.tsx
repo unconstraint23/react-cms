@@ -12,7 +12,7 @@ import LoginPage from '@/pages/login';
 import WrapperRouteComponent from './config';
 
 const NotFound = lazy(() => import(/* webpackChunkName: "404'"*/ '@/pages/404'));
-const Documentation = lazy(() => import(/* webpackChunkName: "404'"*/ '@/pages/doucumentation'));
+
 const Guide = lazy(() => import(/* webpackChunkName: "guide'"*/ '@/pages/guide'));
 const RoutePermission = lazy(() => import(/* webpackChunkName: "route-permission"*/ '@/pages/permission/route'));
 const FormPage = lazy(() => import(/* webpackChunkName: "form'"*/ '@/pages/components/form'));
@@ -21,13 +21,6 @@ const SearchPage = lazy(() => import(/* webpackChunkName: "search'"*/ '@/pages/c
 const TabsPage = lazy(() => import(/* webpackChunkName: "tabs'"*/ '@/pages/components/tabs'));
 const AsidePage = lazy(() => import(/* webpackChunkName: "aside'"*/ '@/pages/components/aside'));
 const RadioCardsPage = lazy(() => import(/* webpackChunkName: "radio-cards'"*/ '@/pages/components/radio-cards'));
-const BusinessBasicPage = lazy(() => import(/* webpackChunkName: "basic-page" */ '@/pages/business/basic'));
-const BusinessWithSearchPage = lazy(() => import(/* webpackChunkName: "with-search" */ '@/pages/business/with-search'));
-const BusinessWithAsidePage = lazy(() => import(/* webpackChunkName: "with-aside" */ '@/pages/business/with-aside'));
-const BusinessWithRadioCardsPage = lazy(
-  () => import(/* webpackChunkName: "with-aside" */ '@/pages/business/with-radio-cards'),
-);
-const BusinessWithTabsPage = lazy(() => import(/* webpackChunkName: "with-tabs" */ '@/pages/business/with-tabs'));
 
 const routeList: RouteObject[] = [
   {
@@ -46,10 +39,7 @@ const routeList: RouteObject[] = [
         path: 'dashboard',
         element: <WrapperRouteComponent element={<Dashboard />} titleId="title.dashboard" />,
       },
-      {
-        path: 'documentation',
-        element: <WrapperRouteComponent element={<Documentation />} titleId="title.documentation" />,
-      },
+
       {
         path: 'guide',
         element: <WrapperRouteComponent element={<Guide />} titleId="title.guide" />,
@@ -81,26 +71,6 @@ const routeList: RouteObject[] = [
       {
         path: 'component/radio-cards',
         element: <WrapperRouteComponent element={<RadioCardsPage />} titleId="title.account" />,
-      },
-      {
-        path: 'business/basic',
-        element: <WrapperRouteComponent element={<BusinessBasicPage />} titleId="title.account" />,
-      },
-      {
-        path: 'business/with-search',
-        element: <WrapperRouteComponent element={<BusinessWithSearchPage />} titleId="title.account" />,
-      },
-      {
-        path: 'business/with-aside',
-        element: <WrapperRouteComponent element={<BusinessWithAsidePage />} titleId="title.account" />,
-      },
-      {
-        path: 'business/with-radio-cards',
-        element: <WrapperRouteComponent element={<BusinessWithRadioCardsPage />} titleId="title.account" />,
-      },
-      {
-        path: 'business/with-tabs',
-        element: <WrapperRouteComponent element={<BusinessWithTabsPage />} titleId="title.account" />,
       },
       {
         path: '*',
